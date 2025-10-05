@@ -1,6 +1,6 @@
 package fr.uvsq.cprog.collex;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
