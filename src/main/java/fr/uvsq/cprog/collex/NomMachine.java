@@ -2,7 +2,7 @@ package fr.uvsq.cprog.collex;
 
 public class NomMachine {
 
-    private String name;
+    private String name;//machine.domaine.local le format
 
     public NomMachine(String name) {
         this.name = name.trim();

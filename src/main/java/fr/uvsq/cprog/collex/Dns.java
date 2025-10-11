@@ -93,4 +93,32 @@ public class Dns {
     public List<DnsItem> getBase() {
         return base;
     }
+
+    public List<DnsItem> getItems(String domaine) {
+        List<DnsItem> result = new ArrayList<>();
+
+        if (domaine == null || domaine.isBlank()) {
+            return result;
+        }
+
+        for (DnsItem item : base) {
+            if (item != null && item.getNomMachine() != null) {
+                String fullName = item.getNomMachine().toString(); // ex: machine.domaine.local
+                int firstDot = fullName.indexOf('.');
+                if (firstDot >= 0 && firstDot + 1 < fullName.length()) {
+                    String domainPart = fullName.substring(firstDot + 1); // partie après le premier point
+                    if (domainPart.contains(domaine)) {
+                        result.add(item);
+                    }
+                }
+            }
+        }
+
+        if (result.isEmpty()) {
+            System.err.println("Aucun DnsItem trouvé pour le domaine : " + domaine);
+        }
+
+        return result;
+    }
+
 }

@@ -3,6 +3,8 @@ package fr.uvsq.cprog.collex;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class DnsTest {
@@ -45,6 +47,25 @@ public class DnsTest {
         DnsItem item = dns.getItem(new AdresseIp("8.8.8.8"));
         assertNull(item);
     }
-    
 
+    @Test
+    public void testGetItemsPythonDomain() {
+        List<DnsItem> items = dns.getItems("uvsq");
+        assertTrue(items.stream().anyMatch(item -> item.getNomMachine().toString().equals("www.uvsq.fr")));
+    }
+
+    @Test
+    public void testGetItemsNullDomain() {
+        List<DnsItem> items = dns.getItems(null);
+        assertNotNull(items);
+        assertTrue(items.isEmpty());
+    }
+
+    @Test
+    public void testGetItemsNonExistingDomain() {
+        List<DnsItem> items = dns.getItems("nonexistent");
+
+        assertNotNull(items);
+        assertTrue(items.isEmpty());
+    }
 }
