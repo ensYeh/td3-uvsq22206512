@@ -14,5 +14,7 @@ public class App {
         DnsItem item1 = dns.getItem(new NomMachine("www.python.org"));
         DnsItem item2 = dns.getItem(new AdresseIp("142.250.74.14"));
         System.out.println(dns.getItems("python"));
+        dns.addItem(new AdresseIp("193.51.25.24"),new NomMachine("pikachu.uvsq.fr"));
     }
+
 }

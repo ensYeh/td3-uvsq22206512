@@ -1,5 +1,6 @@
 package fr.uvsq.cprog.collex;
 
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
@@ -55,8 +56,8 @@ public class Dns {
                 String[] parts = ligne.trim().split("\\s+");
                 if (parts.length == 2) {
                     base.add(new DnsItem(
-                            new AdresseIp(parts[1]),
-                            new NomMachine(parts[0])
+                            new AdresseIp(parts[0]),
+                            new NomMachine(parts[1])
                     ));
                 }
             }
@@ -121,4 +122,48 @@ public class Dns {
         return result;
     }
 
+    public void addItem(AdresseIp ip, NomMachine name) {
+        if (ip == null || name == null) {
+            throw new IllegalArgumentException("Adresse IP et NomMachine doivent être non null");
+        }
+
+        String fullName = name.toString().trim();
+
+        // Vérifie que le nom contient au moins deux points (machine.domaine.local)
+        if (fullName.chars().filter(c -> c == '.').count() < 2) {
+            throw new IllegalArgumentException(
+                    "Le nom de machine doit être au format 'machine.domaine.local' : " + fullName
+            );
+        }
+
+        try {
+            // Ajout à la base en mémoire
+            DnsItem newItem = new DnsItem(ip, name);
+            base.add(newItem);
+            System.out.println("Ajouté avec succès : " + newItem);
+
+            // Lecture du chemin du fichier depuis config.properties
+            Properties props = new Properties();
+            try (InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties")) {
+                if (input == null) {
+                    throw new RuntimeException("Impossible de trouver config.properties");
+                }
+                props.load(input);
+            }
+            String filePathStr = props.getProperty("dns.filename");
+            if (filePathStr == null || filePathStr.isBlank()) {
+                throw new RuntimeException("Propriété 'dns_file' manquante dans config.properties");
+            }
+            Path filePath = Path.of(filePathStr).toAbsolutePath();
+
+            // Écriture dans le fichier
+            String line = ip.toString() + " " + fullName + System.lineSeparator();
+            Files.write(filePath, line.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Erreur lors de l'écriture dans le fichier dns_bdd.txt", e);
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors de l'ajout du DnsItem", e);
+        }
+    }
 }
