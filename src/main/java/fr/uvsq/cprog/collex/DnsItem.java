@@ -2,15 +2,23 @@ package fr.uvsq.cprog.collex;
 
 public class DnsItem {
 
-    private AdresseIp adresse;
-    private NomMachine name;
+    private final AdresseIp ip;
+    private final NomMachine name;
 
-    public DnsItem(AdresseIp adresse, NomMachine name) {
-        this.adresse = adresse;
+    public DnsItem(AdresseIp ip, NomMachine name) {
+        this.ip = ip;
         this.name = name;
     }
+
     public String toString() {
-        return adresse.toString() + " " +  name.toString();
+        return ip.toString() + " " +  name.toString();
     }
 
+    public NomMachine getNomMachine() {
+        return name;
+    }
+
+    public AdresseIp getAdresseIp() {
+        return ip;
+    }
 }

@@ -2,13 +2,26 @@ package fr.uvsq.cprog.collex;
 
 public class AdresseIp {
 
-    private String adresse;
+    private final String ip;
 
-    public AdresseIp(String adresse) {
-        this.adresse = adresse;
+    public AdresseIp(String ip) {
+        this.ip = ip.trim();
     }
 
     public String toString() {
-        return adresse;
+        return ip;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AdresseIp other = (AdresseIp) o;
+        return ip.equals(other.ip);
+    }
+
+    @Override
+    public int hashCode() {
+        return ip.hashCode();
     }
 }
