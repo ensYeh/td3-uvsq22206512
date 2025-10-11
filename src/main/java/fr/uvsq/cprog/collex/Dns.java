@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Objects;
 import java.util.Properties;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -43,12 +42,12 @@ public class Dns {
         try {
             String fileName = getFileNameFromProperties("config.properties", "dns.filename");
 
-            URL resourceUrl = getClass().getClassLoader().getResource(fileName);
-            if (resourceUrl == null) {
-                throw new RuntimeException("Fichier de base DNS introuvable : " + fileName);
+            Path filePath = Path.of(fileName).toAbsolutePath();
+
+            if (!Files.exists(filePath)) {
+                throw new RuntimeException("Fichier de base DNS introuvable : " + filePath);
             }
 
-            Path filePath = Paths.get(resourceUrl.toURI());
             List<String> lignes = Files.readAllLines(filePath);
 
             for (String ligne : lignes) {
@@ -62,7 +61,9 @@ public class Dns {
                 }
             }
 
-        } catch (IOException | URISyntaxException e) {
+            System.out.println("Base DNS chargée depuis : " + filePath);
+
+        } catch (IOException e) {
             throw new RuntimeException("Erreur lors du chargement de la base DNS", e);
         }
     }
@@ -136,6 +137,18 @@ public class Dns {
             );
         }
 
+        // Vérification des doublons
+        for (DnsItem item : base) {
+            if (item.getNomMachine().equals(name)) {
+                System.err.println("ERREUR : Le nom de machine existe déjà !");
+                return;
+            }
+            if (item.getAdresseIp().equals(ip)) {
+                System.err.println("ERREUR : L'adresse IP existe déjà !");
+                return;
+            }
+        }
+
         try {
             // Ajout à la base en mémoire
             DnsItem newItem = new DnsItem(ip, name);
@@ -150,10 +163,12 @@ public class Dns {
                 }
                 props.load(input);
             }
+
             String filePathStr = props.getProperty("dns.filename");
             if (filePathStr == null || filePathStr.isBlank()) {
-                throw new RuntimeException("Propriété 'dns_file' manquante dans config.properties");
+                throw new RuntimeException("Propriété 'dns.filename' manquante dans config.properties");
             }
+
             Path filePath = Path.of(filePathStr).toAbsolutePath();
 
             // Écriture dans le fichier
@@ -166,4 +181,5 @@ public class Dns {
             throw new RuntimeException("Erreur lors de l'ajout du DnsItem", e);
         }
     }
+
 }

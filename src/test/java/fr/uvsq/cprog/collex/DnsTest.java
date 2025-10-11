@@ -3,20 +3,30 @@ package fr.uvsq.cprog.collex;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class DnsTest {
     private Dns dns;
+    private Path testFile;
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
         dns = new Dns();
 
-        dns.getBase().clear(); // Si nécessaire, assure que la base est vide
+        // Vide la base et ajoute deux items de test
+        dns.getBase().clear();
         dns.getBase().add(new DnsItem(new AdresseIp("192.168.0.1"), new NomMachine("www.uvsq.fr")));
         dns.getBase().add(new DnsItem(new AdresseIp("10.0.0.2"), new NomMachine("www.ecampus.fr")));
+
+        // Création d'un fichier temporaire pour tester l'écriture
+        testFile = Files.createTempFile("dns_bdd_test", ".txt");
+        // Si tu veux tester l'écriture dans le fichier, tu peux surcharger getFileNameFromProperties
+        // pour retourner testFile.toAbsolutePath().toString()
     }
 
 
@@ -67,5 +77,47 @@ public class DnsTest {
 
         assertNotNull(items);
         assertTrue(items.isEmpty());
+    }
+
+    //Partie AddItem
+    @Test
+    public void testAddItemNomMachineExistant() {
+        AdresseIp ip = new AdresseIp("192.168.0.3");
+        NomMachine name = new NomMachine("www.uvsq.fr"); // déjà présent
+
+        dns.addItem(ip, name);
+
+        // vérifie l'absence de doublon
+        long count = dns.getBase().stream()
+                .filter(item -> item.getNomMachine().equals(name))
+                .count();
+        assertEquals(1, count);
+    }
+
+    @Test
+    public void testAddItemIpExistant() {
+        AdresseIp ip = new AdresseIp("10.0.0.2"); // déjà présent
+        NomMachine name = new NomMachine("pc2.python.org");
+
+        dns.addItem(ip, name);
+
+        // Vérifie qu'il n'y a pas de doublon
+        long count = dns.getBase().stream()
+                .filter(item -> item.getAdresseIp().equals(ip))
+                .count();
+        assertEquals(1, count);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddItemNomMachineInvalide() {
+        AdresseIp ip = new AdresseIp("192.168.1.12");
+        NomMachine name = new NomMachine("invalidname"); // pas de deux points
+
+        dns.addItem(ip, name);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddItemNull() {
+        dns.addItem(null, null);
     }
 }
