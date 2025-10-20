@@ -22,6 +22,10 @@ public class DnsTUI {
 		return parseCommande(input);
 	}
 
+	private void affiche(String input) {
+		System.out.println(input);
+	}
+
 	//analyse une ligne de commande et crée la Commande correspondante (utilise regex car plus simple)
 	private Commande parseCommande(String input) {
 		if (input.isEmpty()) {
@@ -30,6 +34,7 @@ public class DnsTUI {
 
 		// Commande quit : quitte l'application
 		if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("exit")) {
+			affiche("Fermeture de l'application...");
 			return new CommandeQuit();
 		}
 
