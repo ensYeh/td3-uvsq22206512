@@ -115,13 +115,22 @@ public class Dns {
 
 	//Ajoute un nouvel item et met à jour le fichier texte
 	public void addItem(AdresseIp ip, NomMachine nom) {
+
 		if (ip == null || nom == null) {
 			throw new IllegalArgumentException("Adresse IP et NomMachine doivent être non null");
 		}
 
+		String ipString = ip.toString().trim();
+		if (!ipString.matches(
+			"^((25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]?\\d)\\.){3}(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]?\\d)$")) {
+			throw new IllegalArgumentException("Adresse IP invalide : " + ipString);
+		}
+
+
 		String fullName = nom.toString().trim();
 
-		if (fullName.chars().filter(c -> c == '.').count() < 2) {
+		String[] parts = fullName.split("\\.");
+		if (parts.length < 3 || parts[0].isEmpty() || parts[1].isEmpty() || parts[2].isEmpty()) {
 			throw new IllegalArgumentException("Le nom de machine doit être au format 'machine.domaine.local'");
 		}
 

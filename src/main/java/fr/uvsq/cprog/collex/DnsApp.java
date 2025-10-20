@@ -8,6 +8,7 @@ package fr.uvsq.cprog.collex;
 public class DnsApp {
 
 	public static void main(String[] args) {
+
 		Dns dns = new Dns();
 		DnsTUI tui = new DnsTUI();
 

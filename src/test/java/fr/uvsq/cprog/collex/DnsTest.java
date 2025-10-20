@@ -109,9 +109,34 @@ public class DnsTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void testAddItemIpMauvaisFormat() {
+        AdresseIp ip = new AdresseIp("10666.0666.06.26666"); // déjà présent
+        NomMachine name = new NomMachine("pc2.python.org");
+
+        dns.addItem(ip, name);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void testAddItemNomMachineInvalide() {
         AdresseIp ip = new AdresseIp("192.168.1.12");
         NomMachine name = new NomMachine("invalidname"); // pas de deux points
+
+        dns.addItem(ip, name);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddItemNomMachineInvalideWithOnePoint() {
+        AdresseIp ip = new AdresseIp("192.168.1.12");
+        NomMachine name = new NomMachine(".."); // pas de deux points
+
+        dns.addItem(ip, name);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddItemNomMachineInvalideWithTwoPoint() {
+        AdresseIp ip = new AdresseIp("192.168.1.12");
+        NomMachine name = new NomMachine("."); // pas de deux points
 
         dns.addItem(ip, name);
     }
