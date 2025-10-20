@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * Thomas Torres 22206512
+ * Classe Dns qui implémente la liste des DnsItem et les méthodes de lecture et écriture sur le fichier qui stock la BD
+ * addItem ... et leur exception
+ */
+
 public class Dns {
 
 	private final List<DnsItem> base = new ArrayList<>();
@@ -120,6 +126,7 @@ public class Dns {
 			throw new IllegalArgumentException("Adresse IP et NomMachine doivent être non null");
 		}
 
+		//Vérifie le bon format d'une ip
 		String ipString = ip.toString().trim();
 		if (!ipString.matches(
 			"^((25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]?\\d)\\.){3}(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]?\\d)$")) {

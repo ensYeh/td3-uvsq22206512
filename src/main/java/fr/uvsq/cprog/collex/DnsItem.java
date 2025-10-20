@@ -1,5 +1,8 @@
 package fr.uvsq.cprog.collex;
-
+/**
+ * Thomas Torres 22206512
+ * Classe DnsItem qui stock l'ip et le nom de la machine, ainsi que des getteur ...
+ */
 public class DnsItem {
 
 	private final AdresseIp ip;

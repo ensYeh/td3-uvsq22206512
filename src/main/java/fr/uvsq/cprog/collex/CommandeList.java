@@ -2,6 +2,10 @@ package fr.uvsq.cprog.collex;
 
 import java.util.Comparator;
 import java.util.List;
+/**
+ * Thomas Torres 22206512
+ * Classe CommandeList qui implemente Commande
+ */
 
 public class CommandeList implements Commande {
 	private final String domaine;

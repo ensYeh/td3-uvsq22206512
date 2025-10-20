@@ -1,5 +1,10 @@
 package fr.uvsq.cprog.collex;
 
+/**
+ * Thomas Torres 22206512
+ * Classe AdresseIp qui stock les méthodes et la chaine elle même
+ */
+
 public class AdresseIp {
 
 	private final String ip;

@@ -1,6 +1,7 @@
 package fr.uvsq.cprog.collex;
 
 /**
+ * Thomas Torres 22206512
  * Représente un nom qualifié de machine au format "machine.domaine.local".
  */
 public class NomMachine {
@@ -10,7 +11,6 @@ public class NomMachine {
 
   /**
    * Constructeur.
-   *
    * @param name le nom de la machine
    */
   public NomMachine(String name) {

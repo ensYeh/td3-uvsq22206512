@@ -1,5 +1,10 @@
 package fr.uvsq.cprog.collex;
 
+/**
+ * Thomas Torres 22206512
+ * Classe CommandeGetNom qui implemente Commande qui permet de récupérer le nom de la machine
+ * à partir d'une adresse Ip
+ */
 public class CommandeGetNom implements Commande {
 	private final AdresseIp ip;
 

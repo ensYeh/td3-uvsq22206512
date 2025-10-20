@@ -1,7 +1,0 @@
-142.250.74.14 www.google.com
-138.197.63.241 www.python.org
-93.184.216.34 www.example.com
-193.51.25.24 pikachu.uvsq.fr
-193.51.25.25 ecampus.uvsq.fr
-192.51.25.35 tron.uvsq.fr
-192.51.25.48 ares.uvsq.com

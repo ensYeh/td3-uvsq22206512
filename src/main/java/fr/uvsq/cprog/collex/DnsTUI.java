@@ -2,6 +2,11 @@ package fr.uvsq.cprog.collex;
 
 import java.util.Scanner;
 
+/**
+ * Thomas Torres 22206512
+ * Classe DnsTUI qui utilise un scanner pour récupérer les commandes taper par l'utilisateur
+ */
+
 public class DnsTUI {
 
 	private final Scanner scanner;
